@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "patient <- data.frame(P_name=\"harini\" , P_age = 25 ,P_id=\" i21\",P_class = factor(x=NA,levels = c(\"malignant\", \"benign\")))\nrownames(patient) <- patient$P_name\nsaveRDS(patient , \"C:/Users/lakshmi1/Documents/R/firstWebApp/patient.rds\")\nreadRDS(\"C:/Users/lakshmi1/Documents/R/firstWebApp/patient.rds\")\n\n",
+    "created" : 1481998149418.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "159634547",
+    "id" : "23417710",
+    "lastKnownWriteTime" : 1482045989,
+    "last_content_update" : 1482045989633,
+    "path" : "~/R/firstWebApp/rdscreation.R",
+    "project_path" : "rdscreation.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

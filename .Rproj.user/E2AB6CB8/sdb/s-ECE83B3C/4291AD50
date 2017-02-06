@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "prediction_cancer <- function(){\n  \n  #load the data\nlibrary(mlbench)\nlibrary(caret)\nlibrary(rpart)\nlibrary(rpart.plot)\nlibrary(kernlab)\n  library(randomForest)\ndata(\"BreastCancer\")\n\n#removing missing value using decision trees\ntraining_age <- BreastCancer[!is.na(BreastCancer$Bare.nuclei) ,]\nmodel <- rpart( Bare.nuclei ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Class, data = training_age , method = \"class\")\nBreastCancer$Bare.nuclei[is.na(BreastCancer$Bare.nuclei)] <- predict(model , BreastCancer[is.na(BreastCancer$Bare.nuclei) ,] , type = \"class\")\n\n#create training and testing data\ndata <- createDataPartition(y = BreastCancer$Class , p = 0.75 , list = FALSE)\ntrain <- BreastCancer[data ,]\ntest <- BreastCancer[-data ,]\n\n\ncontrol <- trainControl(method = \"repeatedcv\" , number = 10 , repeats = 10 , savePredictions = FALSE)\n#training using svm radial\nset.seed(7)\nfinal_train <- train(Class ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Bare.nuclei  , data = train , trControl = control , method = \"svmRadial\")\ntest_new <- test\ntest_new$Class <- NA\ntest_new$Class <- predict(final_train , test_new)\n\n#training using randomforest\nset.seed(7)\nfinal_random <-  randomForest(Class ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Bare.nuclei , data = train , ntree = 100)\ntest_new_ran <- test\ntest_new_ran$Class <- NA\ntest_new_ran$Class <- predict(final_random , test_new)\n\n#training using lvq\nset.seed(7)\nfinal_lvm <- train(Class ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Bare.nuclei  , data = train , trControl = control , method = \"lvq\")\n\n#training using gbm\nset.seed(7)\nfinal_gbm <- train(Class ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Bare.nuclei  , data = train , trControl = control , method = \"gbm\")\n\n\n#training using bayesian\nset.seed(7)\nfinal_bayesian <-train(Class ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Bare.nuclei  , data = train , trControl = control , method = \"nb\")\n\n#resampling\nfinal_result<- resamples(list(LVQ=final_lvq,GBM = final_gbm , SVM=final_train , BAY=final_bayesian))\n\n}\n",
+    "created" : 1482037602343.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1125396285",
+    "id" : "4291AD50",
+    "lastKnownWriteTime" : 1481299120,
+    "last_content_update" : 1481299120,
+    "path" : "~/R/BreastCancer/breastcancer.r",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "mod <- function(){\n  library(mlbench)\n  library(caret)\n  library(rpart)\n  library(rpart.plot)\n  library(randomForest)\n  data(\"BreastCancer\")\n  \n  #removing missing value using decision trees\n  training_age <- BreastCancer[!is.na(BreastCancer$Bare.nuclei) ,]\n  model <- rpart( Bare.nuclei ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Class, data = training_age , method = \"class\")\n  BreastCancer$Bare.nuclei[is.na(BreastCancer$Bare.nuclei)] <- predict(model , BreastCancer[is.na(BreastCancer$Bare.nuclei) ,] , type = \"class\")\n  \n  #create training and testing data\n  data <- createDataPartition(y = BreastCancer$Class , p = 0.75 , list = FALSE)\n  train <- BreastCancer[data ,]\n  test <- BreastCancer[-data ,]\n  \n  #training using randomforest\n # set.seed(7)\n  final_random <-  randomForest(Class ~ Cl.thickness + Cell.size + Marg.adhesion + Epith.c.size + Bl.cromatin + Normal.nucleoli + Mitoses + Bare.nuclei , data = train , ntree = 100)\n  saveRDS(final_random, file = \"Bmod.rds\",compress = FALSE)\n  test_new_ran <- test\n  test_new_ran$Class <- NA\n  test_new_ran$Class <- predict(final_random , test_new)\n  \n\n  \n}",
+    "created" : 1482038146149.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3881656166",
+    "id" : "B58AC104",
+    "lastKnownWriteTime" : 1482041399,
+    "last_content_update" : 1482041399523,
+    "path" : "~/R/BreastCancer/model.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
